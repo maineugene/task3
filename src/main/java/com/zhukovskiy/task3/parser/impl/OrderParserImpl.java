@@ -8,6 +8,7 @@ import java.util.List;
 
 public class OrderParserImpl implements OrderParser {
     private final String SPLIT_REGEX = "\\n";
+
     @Override
     public List<Order> parseOrders(String data) {
         List<Order> orders = new ArrayList<>();

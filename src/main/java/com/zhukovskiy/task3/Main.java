@@ -34,7 +34,7 @@ public class Main {
                 tableFactory.createTable(2),
                 tableFactory.createTable(3)
         );
-        Kitchen kitchen = kitchenFactory.createKitchen(5); // кухня может готовить 5 блюд одновременно
+        Kitchen kitchen = kitchenFactory.createKitchen(5);
 
         RestaurantManager manager = new RestaurantManager(tables, kitchen);
 

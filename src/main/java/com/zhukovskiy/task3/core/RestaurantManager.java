@@ -24,18 +24,29 @@ public class RestaurantManager {
     }
 
     public void serveVisitors(List<Order> orders) throws Exception {
+        logger.info("Начало обслуживания {} заказов, доступно {} столов, вместимость кухни {}",
+                orders.size(), tables.size(), kitchen);
+
         ExecutorService pool = Executors.newFixedThreadPool(tables.size());
         List<Future<String>> results = new ArrayList<>();
 
         for (int i = 0; i < orders.size(); i++) {
             Table table = tables.get(i % tables.size());
-            results.add(pool.submit(new VisitorTask(orders.get(i), table, kitchen)));
+            logger.debug("Назначаем заказ {} посетителя {} на стол {}", orders.get(i).getDishCount(),
+                    orders.get(i).getVisitorId(), table.getId());
+
+            VisitorTask task = new VisitorTask(orders.get(i), table, kitchen);
+            Future<String> future = pool.submit(task);
+            results.add(future);
         }
 
         for (Future<String> f : results) {
-            System.out.println(f.get());
+            String result = f.get();
+            logger.info("Результат выполнения задачи: {}", result);
+            System.out.println(result);
         }
         pool.shutdown();
+        logger.info("Все заказы обработаны, пул потоков закрыт.");
     }
 }
 
